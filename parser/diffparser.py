@@ -43,7 +43,16 @@ class DiffParser(object):
 
     def _start_diff(self, line):
         '''Parsing handler starts a new diff.'''
-        self._diff = Diff(line, self._iter.next(), self._iter.next())
+
+        while True:
+            file1info = self._iter.next()
+            if 0 == file1info.find("---"): break
+
+        while True:
+            file2info = self._iter.next()
+            if 0 == file2info.find("+++"): break
+
+        self._diff = Diff(line, file1info, file2info)
         self.diffs.append(self._diff)
 
     def _start_chunk(self, line):
