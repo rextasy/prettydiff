@@ -18,12 +18,18 @@ commandLine.add_argument('source', choices=['hg', 'git', 'file'],
 commandLine.add_argument('filename',
     help='The name of the resource to compare.')
 
+commandLine.add_argument('--stdout',
+    help='Output the resulting markup to the console.',
+    action='store_true')
+
+args = commandLine.parse_args()
+
 try:
     SourceClass = {
         'hg': Hg,
         'git': Git,
         'file': File
-    }[sys.argv[1]]
+    }[args.source]
 except (IndexError, KeyError):
     # if something error'd then rely on the ArgumentParser to show instructions
     commandLine.parse_args()
@@ -33,10 +39,13 @@ except (IndexError, KeyError):
 diff = SourceClass().getUnifiedDiff(commandLine)
 html = prettydiff.convert(diff, 'html')
 
-# write the markup to a tempfile to be opened by the default system handler
+if(args.stdout):
+    print html
+else:
+    # write the markup to a tempfile to be opened by the default system handler
 
-f = tempfile.NamedTemporaryFile(suffix='.html', delete=False)
-f.write(html)
-f.close()
+    f = tempfile.NamedTemporaryFile(suffix='.html', delete=False)
+    f.write(html)
+    f.close()
 
-subprocess.call(f.name, shell=True)
+    subprocess.call(f.name, shell=True)
