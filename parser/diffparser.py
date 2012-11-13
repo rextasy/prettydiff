@@ -1,4 +1,4 @@
-import prettydiff
+import prettydiff, sys
 from ..model.diff import Diff
 from ..model.chunk import Chunk
 
@@ -39,7 +39,8 @@ class DiffParser(object):
         # the first character of each line is used to determine which action to
         # take: start a new diff, start new diff chunk, or append to the files
         for line in self._iter:
-            actions[line[0]](line)
+            if (line[0] in actions):
+                actions[line[0]](line)
 
     def _start_diff(self, line):
         '''Parsing handler starts a new diff.'''
@@ -51,6 +52,9 @@ class DiffParser(object):
         while True:
             file2info = self._iter.next()
             if 0 == file2info.find("+++"): break
+
+#        print "[%s][%s][%s]" % (line, file1info, file2info)
+#        sys.exit()
 
         self._diff = Diff(line, file1info, file2info)
         self.diffs.append(self._diff)
