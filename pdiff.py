@@ -19,8 +19,12 @@ commandLine.add_argument('filename',
     help='The name of the resource to compare.')
 
 commandLine.add_argument('--stdout',
-    help='Output the resulting markup to the console.',
-    action='store_true')
+                         help='Output the resulting markup to the console.',
+                         action='store_true')
+
+commandLine.add_argument('--target', choices=['html', 'email'],
+                         help='Output the resulting markup to the console.',
+                         default='html')
 
 args = commandLine.parse_args()
 
@@ -37,7 +41,7 @@ except (IndexError, KeyError):
 # the getUnifiedDiff() method must return a unified diff as an array of lines
 
 diff = SourceClass().getUnifiedDiff(commandLine)
-html = prettydiff.convert(diff, 'html')
+html = prettydiff.convert(diff, args.target)
 
 if(args.stdout):
     print html
