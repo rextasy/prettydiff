@@ -3,7 +3,7 @@
 
 """This is the command-line interface to the diff pretty printer."""
 
-import sys, argparse, subprocess, tempfile, prettydiff
+import sys, traceback, argparse, subprocess, tempfile, prettydiff
 from prettydiff.cli.hg import Hg
 from prettydiff.cli.git import Git
 from prettydiff.cli.file import File
@@ -26,6 +26,10 @@ commandLine.add_argument('--target', choices=['html', 'email'],
                          help='Output the resulting markup to the console.',
                          default='html')
 
+commandLine.add_argument('--cmd',
+                         help='The native diff command used by the source control system. This field is used for debugging exceptions.',
+                         default='')
+
 args = commandLine.parse_args()
 
 try:
@@ -41,7 +45,18 @@ except (IndexError, KeyError):
 # the getUnifiedDiff() method must return a unified diff as an array of lines
 
 diff = SourceClass().getUnifiedDiff(commandLine)
-html = prettydiff.convert(diff, args.target)
+
+try:
+    html = prettydiff.convert(diff, args.target)
+except:
+    exc_type, exc_value, exc_traceback = sys.exc_info()
+
+    cmd = (args.cmd+"\n") if args.cmd else diff[0]
+
+    html = "---------------------[ PrettyDiff Python Exception ]----------------------\n"
+    html += "Command:\n  " + cmd + "\n"
+    html += "".join(traceback.format_exception(exc_type, exc_value, exc_traceback))
+    html += '-'*74
 
 if(args.stdout):
     print html
