@@ -25,7 +25,12 @@ class Chunk(object):
         '''
 
         # parse the chunk information string into startA and startB integers
-        m = re.search('^@@ -(\d+)(?:,\d+)? \+(\d+)(?:,\d+)? @@$', chunk_info)
+        m = re.search('^@@ -(\d+)(?:,\d+)? \+(\d+)(?:,\d+)? @@', chunk_info)
+
+        print chunk_info . "\n";
+
+
+
         (startA, startB) = (int(m.group(1)), int(m.group(2)))
 
         # create a holder object for each side of the diff
