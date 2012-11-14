@@ -71,7 +71,7 @@ class EmailView(object):
     }
 
     HTML_DIFF_HEADING = '''<table style-class="heading" cellpadding="0" cellspacing="0" border="0">
-    <tbody style-class="heading-tbody"><tr><td style-class="filename"><a href="%s">%s</a></td></tr></tbody></table>'''
+    <tbody style-class="heading-tbody"><tr><td style-class="filename"><a name="%s">%s</a></td></tr></tbody></table>'''
 
     HTML_CHANGES_INDEX = '''
     <table style-class="changes added change-index">
