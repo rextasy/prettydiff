@@ -71,7 +71,7 @@ class EmailView(object):
     }
 
     HTML_DIFF_HEADING = '''<table style-class="heading" cellpadding="0" cellspacing="0" border="0">
-    <tbody style-class="heading-tbody"><tr><td style-class="filename">%s</td></tr></tbody></table>'''
+    <tbody style-class="heading-tbody"><tr><td style-class="filename"><a href="%s">%s</a></td></tr></tbody></table>'''
 
     HTML_CHANGES_INDEX = '''
     <table style-class="changes added change-index">
@@ -205,7 +205,7 @@ class EmailView(object):
 
     def _render_heading(self):
         '''Renders the diff's heading.'''
-        self.ui.append(self.HTML_DIFF_HEADING % self.diff.file)
+        self.ui.append(self.HTML_DIFF_HEADING % (self.diff.file, self.diff.file))
 
     def _render_changes_index(self):
         '''Renders a diff's change index table which summarizes the added,

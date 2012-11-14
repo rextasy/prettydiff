@@ -118,7 +118,7 @@ class HtmlView(object):
         "'": '&apos;'
     }
 
-    HTML_DIFF_HEADING = '''<h1 class="diff">%s</h1>'''
+    HTML_DIFF_HEADING = '''<h1 class="diff"><a name="%s">%s</a></h1>'''
 
     HTML_CHANGES_INDEX = '''
     <div class="changes added">
@@ -214,7 +214,7 @@ class HtmlView(object):
 
     def _render_heading(self):
         '''Renders the diff's heading.'''
-        self.ui.append(self.HTML_DIFF_HEADING % self.diff.file)
+        self.ui.append(self.HTML_DIFF_HEADING % (self.diff.file, self.diff.file))
 
     def _render_changes_index(self):
         '''Renders a diff's change index table which summarizes the added,
